@@ -34,7 +34,6 @@ public class PostService {
         }else{
             throw new EntityNotFoundException("User or channel does not exist");
         }
-
     }
 
     public List<Post> findAllPosts(){
