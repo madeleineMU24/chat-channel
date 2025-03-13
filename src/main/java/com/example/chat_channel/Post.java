@@ -1,6 +1,7 @@
 package com.example.chat_channel;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Post {
@@ -9,6 +10,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Message cannot be empty")
     private String message;
 
     @ManyToOne

@@ -30,4 +30,11 @@ public class UserService {
         userRepo.deleteById(id);
     }
 
+    public User updateUser(User newUser){
+        return userRepo.findById(newUser.getId()).map(user -> {
+            user.setName((newUser.getName()));
+            return userRepo.save(user);
+        }).orElse(null);
+    }
+
 }

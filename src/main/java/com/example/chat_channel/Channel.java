@@ -2,6 +2,7 @@ package com.example.chat_channel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class Channel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Channel name cannot be empty")
     private String name;
 
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)

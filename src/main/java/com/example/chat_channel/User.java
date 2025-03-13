@@ -2,6 +2,8 @@ package com.example.chat_channel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -12,6 +14,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Name cannot be empty")
+    @Size(min = 2, max = 20, message = "Name need to be between 2-20 characters")
     private String name;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

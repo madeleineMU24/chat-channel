@@ -29,4 +29,12 @@ public class ChannelService {
     public void deleteChannelById(Long id){
         channelRepo.deleteById(id);
     }
+
+    public Channel updateChannel(Channel newChannel){
+        return channelRepo.findById(newChannel.getId()).map(user -> {
+            user.setName((newChannel.getName()));
+            return channelRepo.save(user);
+        }).orElse(null);
+    }
+
 }
