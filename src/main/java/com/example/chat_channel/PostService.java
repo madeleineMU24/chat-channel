@@ -1,6 +1,7 @@
 package com.example.chat_channel;
 
 import org.springframework.stereotype.Service;
+import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +32,7 @@ public class PostService {
         if(userExists(post.getUser().getId()) && channelExists(post.getChannel().getId())){
             return postRepo.save(post);
         }else{
-            throw new IllegalArgumentException("User or channel does not exist");
+            throw new EntityNotFoundException("User or channel does not exist");
         }
 
     }

@@ -2,6 +2,7 @@ package com.example.chat_channel;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Post {
@@ -15,10 +16,12 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotNull(message = "user cannot be null")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "channel_id")
+    @NotNull(message = "channel cannot be null")
     private Channel channel;
 
     public Post() {
