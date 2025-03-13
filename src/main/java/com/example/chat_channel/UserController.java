@@ -1,5 +1,6 @@
 package com.example.chat_channel;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,23 +33,22 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User findUserById(@PathVariable Long id){
-        Optional<User> user = userService.findUserById(id);
-        return user.orElse(null);
+       return userService.findUserById(id).orElseThrow(() -> new EntityNotFoundException("no user with id " + id));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUserById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteUserById(@PathVariable Long id){
+        userService.findUserById(id).orElseThrow(() -> new EntityNotFoundException("no user with id " + id));
         userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User newUser){
-        User user = userService.updateUser(newUser);
-        if (user != null){
-            return ResponseEntity.accepted().body(newUser);
-        }else {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User newUser){
+        User user = userService.findUserById(id).orElseThrow(()-> new EntityNotFoundException("no user with id " + id));
+        user.setName(newUser.getName());
+        userService.updateUser(user);
+        return ResponseEntity.ok(user);
     }
 
 }

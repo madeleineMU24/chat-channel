@@ -1,5 +1,6 @@
 package com.example.chat_channel;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -28,12 +29,16 @@ public class PostController {
     public List<Post> findAllPosts() {
         return postService.findAllPosts();
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePostById(@PathVariable Long id){
+        postService.findPostById(id).orElseThrow(() -> new EntityNotFoundException("no post with id " + id));
+        postService.deletePostById(id);
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> findPostById(@PathVariable Long id) {
-        return postService.findPostById(id)
-                .map(post -> new ResponseEntity<>(post, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Post findPostById(@PathVariable Long id){
+        return postService.findPostById(id).orElseThrow(()-> new EntityNotFoundException("no post with id " + id));
     }
 
 }
